@@ -16,7 +16,22 @@ jobs:
   send-email:
     runs-on: ubuntu-latest
     steps:
-      - name: Send email
-        run: |
-          echo "Sending email to ${{ inputs.helpdesk_email }}"
-          # your email logic here using ${{ secrets.OUTLOOK_EMAIL }} and ${{ secrets.OUTLOOK_APP_PASSWORD }}
+      - name: Send Outlook email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.office365.com
+          server_port: 587
+          username: ${{ secrets.OUTLOOK_EMAIL }}
+          password: ${{ secrets.OUTLOOK_APP_PASSWORD }}
+          subject: >
+            [GitHub] Issue ${{ github.event.action }} - #${{ github.event.issue.number }}
+          body: |
+            Repository: ${{ github.repository }}
+            Action: ${{ github.event.action }}
+            Issue Title: ${{ github.event.issue.title }}
+            Assigned To: ${{ github.event.issue.assignee.login || 'Unassigned' }}
+            URL: ${{ github.event.issue.html_url }}
+          to: ${{ inputs.helpdesk_email }}
+          from: GitHub Notifications <${{ secrets.OUTLOOK_EMAIL }}>
+          secure: true
+
