@@ -33,5 +33,5 @@ jobs:
             URL: ${{ github.event.issue.html_url }}
           to: ${{ inputs.helpdesk_email }}
           from: GitHub Notifications <${{ secrets.OUTLOOK_EMAIL }}>
-          secure: true
+          secure: false
 
