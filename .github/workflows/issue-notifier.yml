@@ -1,14 +1,22 @@
-name: Trigger Issue Notifier
+name: Issue Notifier
 
 on:
-  issues:
-    types: [opened, closed, assigned]
+  workflow_call:
+    inputs:
+      helpdesk_email:
+        required: true
+        type: string
+    secrets:
+      OUTLOOK_EMAIL:
+        required: true
+      OUTLOOK_APP_PASSWORD:
+        required: true
 
 jobs:
-  call-notifier:
-    uses: Mitra-Dev/github-actions-workflows/.github/workflows/issue-notifier.yml@main
-    secrets:
-      OUTLOOK_EMAIL: ${{ secrets.OUTLOOK_EMAIL }}
-      OUTLOOK_APP_PASSWORD: ${{ secrets.OUTLOOK_APP_PASSWORD }}
-    with:
-      helpdesk_email: apps@mitra.mw
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email
+        run: |
+          echo "Sending email to ${{ inputs.helpdesk_email }}"
+          # your email logic here using ${{ secrets.OUTLOOK_EMAIL }} and ${{ secrets.OUTLOOK_APP_PASSWORD }}
