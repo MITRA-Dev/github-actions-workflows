@@ -20,7 +20,7 @@ jobs:
             "action": "${{ github.event.action }}",
             "issue_number": "${{ github.event.issue.number }}",
             "title": "${{ github.event.issue.title }}",
-            "assigned_to": "${{ github.event.issue.assignee.login || "Unassigned" }}",
+            assignee: ${{ github.event.issue.assignee && github.event.issue.assignee.login || 'Unassigned' }},
             "url": "${{ github.event.issue.html_url }}"
           }'
 
